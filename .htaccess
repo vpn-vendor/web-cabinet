@@ -5,6 +5,11 @@
 RewriteEngine On
 RewriteBase /
 
+# Если URL заканчивается на слеш и не является корневой директорией, удаляем его
+RewriteCond %{REQUEST_URI} ^(.+)/$
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ %1 [R=301,L]
+
 # Исключаем каталог elfinder из перенаправлений
 RewriteCond %{REQUEST_URI} ^/elfinder/ [NC]
 RewriteRule .* - [L]
