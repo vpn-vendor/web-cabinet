@@ -21,7 +21,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
     include 'inc/navigation.php';
     echo '<div class="main-container">';
 
-    $page = isset($_GET['page']) ? $_GET['page'] : 'home';
+    $page = isset($_GET['page']) ? rtrim($_GET['page'], '/') : 'home';
     switch ($page) {
         case 'home':
             include 'inc/home.php';
@@ -45,8 +45,11 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
             include 'inc/monitoring.php';
             break;
         case 'filemanager':
-          include 'inc/filemanager.php';
-          break;
+            include 'inc/filemanager.php';
+            break;
+        case 'telegram_bot':
+            include 'inc/telegram_bot.php';
+            break;
         default:
             echo "<h1>404</h1><p>Страница не найдена.</p>";
             break;
