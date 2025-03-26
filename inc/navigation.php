@@ -8,5 +8,6 @@
         <li><a href="/console">Консоль</a></li>
         <li><a href="/network">Сеть</a></li>
         <li><a href="/filemanager">Файловый менеджер</a></li>
+        <li><a href="/telegram_bot">Telegram Bot</a></li>
     </ul>
 </nav>
