@@ -276,27 +276,85 @@
 
 <script>
 // Drag-and-drop для загрузки файла
+window.selectedFile = null;
+
+// Обработка клика для открытия диалога выбора файла
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('openvpn_file');
 
 uploadArea.addEventListener('click', () => {
     fileInput.click();
 });
+
+// Обновление выбранного файла при выборе через стандартный диалог
+fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) {
+        window.selectedFile = fileInput.files[0];
+        uploadArea.innerText = "Файл выбран: " + window.selectedFile.name;
+    }
+});
+
+// Обработка событий drag&drop
 uploadArea.addEventListener('dragover', (e) => {
     e.preventDefault();
     uploadArea.classList.add('dragover');
 });
+
 uploadArea.addEventListener('dragleave', (e) => {
     e.preventDefault();
     uploadArea.classList.remove('dragover');
 });
+
 uploadArea.addEventListener('drop', (e) => {
     e.preventDefault();
     uploadArea.classList.remove('dragover');
-    if(e.dataTransfer.files.length) {
-        fileInput.files = e.dataTransfer.files;
-        uploadArea.innerText = "Файл выбран: " + e.dataTransfer.files[0].name;
+    if (e.dataTransfer.files.length) {
+        // Сохраняем первый файл из списка
+        window.selectedFile = e.dataTransfer.files[0];
+        uploadArea.innerText = "Файл выбран: " + window.selectedFile.name;
     }
+});
+
+// Перехват стандартной отправки формы и отправка через fetch
+document.getElementById('uploadForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (!window.selectedFile) {
+        alert("Файл не выбран!");
+        return;
+    }
+
+    // Проверка расширения файла
+    const ext = window.selectedFile.name.split('.').pop().toLowerCase();
+    if (ext !== 'ovpn') {
+        alert("Ошибка: Загрузите файл с расширением .ovpn");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('config_file', window.selectedFile);
+
+    fetch('/scripts/upload_openvpn.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+         // Если в результате присутствует DOCTYPE, скорее всего, это полный HTML страницы,
+         // полученной в результате редиректа, что означает успешную загрузку.
+         if(result.includes("<!DOCTYPE html>")) {
+            showToast("Конфиг успешно загружен!", "success");
+            setTimeout(() => { location.reload(); }, 1500);
+         } else if (result.includes("Ошибка")) {
+            showToast(result, "error");
+         } else {
+            showToast("Конфиг успешно загружен!", "success");
+            setTimeout(() => { location.reload(); }, 1500);
+         }
+    })
+    .catch(error => {
+        showToast("Ошибка: " + error, "error");
+    });
 });
 
 // Модальное окно для перезагрузки OpenVPN
@@ -351,21 +409,36 @@ document.getElementById('btnExportLogs').addEventListener('click', function() {
 });
 
 // Toast-уведомления
-function showToast(message, type='success') {
+function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     if (!container) return;
+    
     const toast = document.createElement('div');
     toast.classList.add('toast-message', type);
+    
+    // Создаём элемент для текста уведомления
+    const textSpan = document.createElement('span');
+    textSpan.innerText = message;
+    
+    // Создаём кнопку закрытия с проверкой наличия элемента
     const closeBtn = document.createElement('button');
     closeBtn.classList.add('close-btn');
     closeBtn.innerHTML = '×';
-    closeBtn.onclick = () => container.removeChild(toast);
-    toast.innerText = message;
+    closeBtn.onclick = () => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    };
+    
+    // Добавляем текст и кнопку в уведомление
+    toast.appendChild(textSpan);
     toast.appendChild(closeBtn);
     container.appendChild(toast);
+    
+    // Автоматически удаляем уведомление через 5 секунд
     setTimeout(() => {
-        if (toast.parentNode === container) {
-            container.removeChild(toast);
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
         }
     }, 5000);
 }

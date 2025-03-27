@@ -279,27 +279,79 @@
 
 <script>
 // Drag-and-drop
+window.selectedFile = null;
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('wireguard_file');
 
 uploadArea.addEventListener('click', () => {
     fileInput.click();
 });
+
+fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) {
+        window.selectedFile = fileInput.files[0];
+        uploadArea.innerText = "Файл выбран: " + window.selectedFile.name;
+    }
+});
+
 uploadArea.addEventListener('dragover', (e) => {
     e.preventDefault();
     uploadArea.classList.add('dragover');
 });
+
 uploadArea.addEventListener('dragleave', (e) => {
     e.preventDefault();
     uploadArea.classList.remove('dragover');
 });
+
 uploadArea.addEventListener('drop', (e) => {
     e.preventDefault();
     uploadArea.classList.remove('dragover');
     if(e.dataTransfer.files.length) {
-        fileInput.files = e.dataTransfer.files;
-        uploadArea.innerText = "Файл выбран: " + e.dataTransfer.files[0].name;
+        window.selectedFile = e.dataTransfer.files[0];
+        uploadArea.innerText = "Файл выбран: " + window.selectedFile.name;
     }
+});
+
+// Перехват отправки формы и отправка через fetch
+document.getElementById('uploadForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (!window.selectedFile) {
+        alert("Файл не выбран!");
+        return;
+    }
+
+    // Проверка расширения файла (ожидается .conf)
+    const ext = window.selectedFile.name.split('.').pop().toLowerCase();
+    if(ext !== 'conf') {
+        alert("Ошибка: Загрузите файл с расширением .conf");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('config_file', window.selectedFile);
+
+    fetch('/scripts/upload_wireguard.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+         // Если получен полный HTML (редирект), считаем, что загрузка успешна
+         if(result.includes("<!DOCTYPE html>")) {
+            showToast("Конфиг успешно загружен!", "success");
+            setTimeout(() => { location.reload(); }, 1500);
+         } else if(result.includes("Ошибка")) {
+            showToast(result, "error");
+         } else {
+            showToast("Конфиг успешно загружен!", "success");
+            setTimeout(() => { location.reload(); }, 1500);
+         }
+    })
+    .catch(error => {
+         showToast("Ошибка: " + error, "error");
+    });
 });
 
 // Модальное окно: перезагрузка
@@ -352,22 +404,33 @@ document.getElementById('btnExportLogs').addEventListener('click', function() {
 });
 
 // Toast-уведомления
-function showToast(message, type='success') {
+function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     if (!container) return;
+    
     const toast = document.createElement('div');
     toast.classList.add('toast-message', type);
+    
+    const textSpan = document.createElement('span');
+    textSpan.innerText = message;
+    
     const closeBtn = document.createElement('button');
     closeBtn.classList.add('close-btn');
     closeBtn.innerHTML = '×';
-    closeBtn.onclick = () => container.removeChild(toast);
-    toast.innerText = message;
+    closeBtn.onclick = () => {
+         if (toast.parentNode) {
+             toast.parentNode.removeChild(toast);
+         }
+    };
+    
+    toast.appendChild(textSpan);
     toast.appendChild(closeBtn);
     container.appendChild(toast);
+    
     setTimeout(() => {
-        if (toast.parentNode === container) {
-            container.removeChild(toast);
-        }
+         if (toast.parentNode) {
+             toast.parentNode.removeChild(toast);
+         }
     }, 5000);
 }
 </script>
