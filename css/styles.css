@@ -55,9 +55,9 @@ header {
     background-color: #555;
 }
 
-/* Основной контейнер */
+/* Добавляем отступ снизу к основному контейнеру */
 .main-container {
-    padding: 20px;
+    padding-bottom: 60px; /* подбираем значение равное высоте footer */
 }
 
 .info-field {
