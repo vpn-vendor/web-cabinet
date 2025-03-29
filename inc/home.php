@@ -1,26 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>VPN Panel</title>
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-    <div class="main-container">
-        <style>
-            /* Дополнительные стили, если нужны */
-            .os-info {
-                background-color: #333;
-                display: inline-block;
-                padding: 6px 10px;
-                border-radius: 6px;
-                margin-bottom: 10px;
-            }
-        </style>
-
 <?php
-// /var/www/html/inc/home.php
+// inc/home.php
 
 // Определяем ОС и uptime
 $osInfo = trim(shell_exec('lsb_release -d 2>/dev/null'));
@@ -106,50 +85,15 @@ function formatStatus($status) {
     <option value="86400">24 часа</option>
   </select>
   <button id="btnApplyRange">Применить</button>
+</div>
 
 <!-- Сам график -->
 <div id="chartCombined" style="max-width:900px; height:400px; margin: 0 auto;"></div>
 
-<!-- Подключаем библиотеки Highcharts -->
+<!-- Подключаем библиотеки Highcharts и другие скрипты -->
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-<!-- (Дополнительно) <script src="https://code.highcharts.com/highcharts-more.js"></script> -->
-
-<!-- Скрипт с логикой Highcharts (home_highcharts.js) -->
 <script src="/js/home_highcharts.js"></script>
-
-<!-- Скрипт со старыми прогресс-барами и пингом (home.js) -->
 <script src="/js/home.js"></script>
-
-<!-- (Опционально) Подключение chart.js, если нужно -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-// Раскрытие/скрытие таблицы Сетевые интерфейсы
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtn = document.getElementById('toggle-ifaces');
-    const tableDiv = document.getElementById('interfaces-table');
-    toggleBtn.addEventListener('click', function() {
-        if (tableDiv.style.display === 'none' || tableDiv.style.display === '') {
-            tableDiv.style.display = 'block';
-            toggleBtn.textContent = '[-]';
-        } else {
-            tableDiv.style.display = 'none';
-            toggleBtn.textContent = '[+]';
-        }
-    });
-});
-</script>
-
-    </div>
-
-    <footer>
-        <span>© 2025 VPN Panel v2.4.0</span>
-        &nbsp;|&nbsp;
-        <a href="https://t.me/vpn_vendor" target="_blank">
-            Поддержка в Telegram
-        </a>
-    </footer>
-</body>
-</html>

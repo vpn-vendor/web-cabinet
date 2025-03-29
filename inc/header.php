@@ -2,6 +2,7 @@
 // /var/www/html/inc/header.php
 $publicIp = trim(shell_exec('curl -s ifconfig.me'));
 ?>
+<!-- Блок, отображающий IP по центру вверху (если нужно) -->
 <div style="
   position:absolute;
   top:22px;
@@ -12,19 +13,11 @@ $publicIp = trim(shell_exec('curl -s ifconfig.me'));
   border-radius:4px;">
     <span>IP: <?php echo htmlspecialchars($publicIp); ?></span>
 </div>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>VPN Panel</title>
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
+
 <header>
     <div class="header-logo">
         <a href="/"><img src="/logo.png" alt="Logo" height="40"></a>
-        <span class="header-title">VPN Panel</span>
+        <a href="/" class="header-title" style="text-decoration: none; color: inherit;">VPN Panel</a>
     </div>
     <!-- Кнопка для выхода -->
     <div style="position: absolute; top: 22px; right: 20px;">
@@ -36,5 +29,5 @@ $publicIp = trim(shell_exec('curl -s ifconfig.me'));
     </div>
 </header>
 
-<!-- Подключаем скрипт для обновления глобального пинга -->
+<!-- Скрипт для обновления глобального пинга -->
 <script src="/js/global_ping.js"></script>
