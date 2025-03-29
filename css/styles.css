@@ -60,17 +60,6 @@ header {
     padding: 20px;
 }
 
-/* Футер */
-footer {
-    background-color: #333;
-    text-align: center;
-    color: #fff;
-    padding: 10px;
-    position: fixed; 
-    bottom: 0;
-    width: 100%;
-}
-
 .info-field {
     background-color: #333;
     padding: 10px;
@@ -238,41 +227,81 @@ th, td {
     margin: 0 2px;
 }
 
-<style>
-  .system-stats-new {
-      margin: 20px auto;
-      max-width: 600px;
-      padding: 15px;
-      background: #f7f7f7;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* Фиксируем подвал внизу окна */
+footer {
+    position: fixed;    /* фиксируем */
+    bottom: 0;          /* внизу */
+    width: 100%;
+    background-color: #2f2f2f;
+    color: #fff;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* левая колонка, центр, правая колонка */
+    align-items: center; /* вертикальное выравнивание по центру */
+    width: 100%;
+}
+
+/* Три колонки: слева, по центру, справа */
+.footer-left {
+    text-align: left;
+}
+.footer-center {
+    text-align: center;
+}
+.footer-right {
+    text-align: right;
+}
+
+.footer-link {
+    color: #fff;
+    text-decoration: none;
+}
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+.network-indicator {
+    font-size: 14px;
+}
+
+.system-stats-new {
+    margin: 20px auto;
+    max-width: 1400px;
+    padding: 15px;
+    background: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
-  .system-stats-new h2 {
-      text-align: center;
-      margin-bottom: 15px;
+.system-stats-new h2 {
+    text-align: center;
+    margin-bottom: 15px;
   }
-  .system-stats-new .stat-item {
-      margin-bottom: 10px;
+.system-stats-new .stat-item {
+    margin-bottom: 10px;
   }
-  .system-stats-new .stat-item span {
-      display: inline-block;
-      width: 60px;
-      font-weight: bold;
+.system-stats-new .stat-item span {
+    display: inline-block;
+    width: 60px;
+    font-weight: bold;
   }
-  .system-stats-new .progress-bar {
-      display: inline-block;
-      width: calc(100% - 70px);
-      background: #ddd;
-      border-radius: 4px;
-      overflow: hidden;
-      vertical-align: middle;
+.system-stats-new .progress-bar {
+    display: inline-block;
+    width: calc(100% - 70px);
+    background: #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    vertical-align: middle;
   }
-  .system-stats-new .progress-fill {
-      height: 20px;
-      line-height: 20px;
-      background: #4caf50;
-      color: #fff;
-      text-align: center;
-      transition: width 0.5s ease-in-out;
-  }
-</style>
+.system-stats-new .progress-fill {
+    height: 20px;
+    line-height: 20px;
+    background: #4caf50;
+    color: #fff;
+    text-align: center;
+    transition: width 0.5s ease-in-out;
+}
