@@ -29,9 +29,11 @@ function formatStatus($status) {
 ?>
 
 <!-- Основное содержимое страницы -->
-<div class="os-info">
-    <strong><?php echo htmlspecialchars($osInfo); ?></strong><br>
-    <em><?php echo htmlspecialchars($uptimeStr); ?></em>
+<div class="system-info-container">
+    <div class="os-info">
+        <strong><?php echo htmlspecialchars($osInfo); ?></strong><br>
+        <em><?php echo htmlspecialchars($uptimeStr); ?></em>
+    </div>
 </div>
 
 <div style="margin-bottom:20px; text-align:center;">

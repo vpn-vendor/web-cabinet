@@ -305,3 +305,13 @@ footer {
     text-align: center;
     transition: width 0.5s ease-in-out;
 }
+
+/* Стили для контейнера с информацией о системе */
+.system-info-container {
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0 20px 20px;  /* верх, право, низ, лево */
+    max-width: 200px;
+}
