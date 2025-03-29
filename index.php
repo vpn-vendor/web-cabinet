@@ -5,6 +5,9 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
     header("Location: login.php");
     exit();
 }
+
+// Подключаем конфиг
+require_once 'config.php';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -15,47 +18,57 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <?php
-    require_once 'config.php';
-    include 'inc/header.php';
-    include 'inc/navigation.php';
-    echo '<div class="main-container">';
 
-    $page = isset($_GET['page']) ? rtrim($_GET['page'], '/') : 'home';
-    switch ($page) {
-        case 'home':
-            include 'inc/home.php';
-            break;
-        case 'openvpn':
-            include 'inc/openvpn.php';
-            break;
-        case 'wireguard':
-            include 'inc/wireguard.php';
-            break;
-        case 'logs':
-            include 'inc/logs.php';
-            break;
-        case 'console':
-            include 'inc/console.php';
-            break;
-        case 'network':
-            include 'inc/network.php';
-            break;
-        case 'monitoring':
-            include 'inc/monitoring.php';
-            break;
-        case 'filemanager':
-            include 'inc/filemanager.php';
-            break;
-        case 'telegram_bot':
-            include 'inc/telegram_bot.php';
-            break;
-        default:
-            echo "<h1>404</h1><p>Страница не найдена.</p>";
-            break;
-    }
-    echo '</div>';
-    include 'inc/footer.php';
-    ?>
+<?php
+// Подключаем шапку (без дублирования <html>, <head>, <body>)
+include 'inc/header.php';
+
+// Подключаем навигацию
+include 'inc/navigation.php';
+
+// Основной контейнер
+echo '<div class="main-container">';
+
+// Роутинг страниц
+$page = isset($_GET['page']) ? rtrim($_GET['page'], '/') : 'home';
+switch ($page) {
+    case 'home':
+        include 'inc/home.php';
+        break;
+    case 'openvpn':
+        include 'inc/openvpn.php';
+        break;
+    case 'wireguard':
+        include 'inc/wireguard.php';
+        break;
+    case 'logs':
+        include 'inc/logs.php';
+        break;
+    case 'console':
+        include 'inc/console.php';
+        break;
+    case 'network':
+        include 'inc/network.php';
+        break;
+    case 'monitoring':
+        include 'inc/monitoring.php';
+        break;
+    case 'filemanager':
+        include 'inc/filemanager.php';
+        break;
+    case 'telegram_bot':
+        include 'inc/telegram_bot.php';
+        break;
+    default:
+        echo "<h1>404</h1><p>Страница не найдена.</p>";
+        break;
+}
+
+echo '</div>';
+
+// Подключаем подвал (без закрывающих тегов body/html)
+include 'inc/footer.php';
+?>
+
 </body>
 </html>
