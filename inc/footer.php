@@ -148,6 +148,6 @@ function updateNetworkSpeed() {
         });
 }
 
-setInterval(updateNetworkSpeed, 1000);
+setInterval(updateNetworkSpeed, 2000);
 updateNetworkSpeed();
 </script>
