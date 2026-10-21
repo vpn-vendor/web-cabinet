@@ -28,6 +28,13 @@ function formatStatus($status) {
 }
 ?>
 
+<!-- Плашка о новой версии: чистая разметка, без логики -->
+<div class="upg-banner">
+    <strong>Вышла новая версия — VPN Panel.</strong> Скрипт больше не развивается.
+    Панель ставится на этот же сервер и сама переносит настройки.
+    <a href="/upgrade">Как перейти</a>
+</div>
+
 <!-- Основное содержимое страницы -->
 <div class="system-info-container">
     <div class="os-info">

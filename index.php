@@ -16,6 +16,7 @@ require_once 'config.php';
     <title>VPN Panel</title>
     <link rel="icon" href="/favicon.png" type="image/png">
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/upgrade.css">
 </head>
 <body>
 
@@ -58,6 +59,9 @@ switch ($page) {
         break;
     case 'telegram_bot':
         include 'inc/telegram_bot.php';
+        break;
+    case 'upgrade':
+        include 'inc/upgrade.php';
         break;
     default:
         echo "<h1>404</h1><p>Страница не найдена.</p>";

@@ -9,5 +9,6 @@
         <li><a href="/network">Сеть</a></li>
         <li><a href="/filemanager">Файловый менеджер</a></li>
         <li><a href="/telegram_bot">Telegram Bot</a></li>
+        <li><a href="/upgrade">Новая версия</a></li>
     </ul>
 </nav>
